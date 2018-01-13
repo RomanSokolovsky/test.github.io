@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+    <audio id="sound"  src="click.wav"></audio>
+
+  <style>
+    html {
+      background:url(macro.jpg);
+
+      font-family:'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display:flex;
+      flex:1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      background: url(clockBack.png);
+      background-size:cover;
+      width: 500px;
+      height: 500px;
+      margin:50px auto;
+      position: relative;
+      padding:2rem;
+
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-10px); /* account for the height of the clock hands */
+      transform: translateX(17px); /* account for the height of the clock hands */
+    }
+
+    .hour-hand {
+      width:50px;
+      height:180px;
+      background: url(our.png);
+      background-size:cover;
+      position: absolute;
+      right: 48.8%;
+      bottom: 46.8%;
+      transform-origin: 50% 91%;
+      transform: rotate(0deg);
+      transition: all 0.3s;
+      transition-timing-function: cubic-bezier(0.21, 1.72, 0.86, -0.35);
+    }
+    .min-hand {
+      width: 33px;
+      height: 217px;
+      background: url(second.png);
+      background-size: cover;
+      position: absolute;
+      right: 50%;
+      bottom: 46.6%;
+      transform-origin: 48% 200.9px;
+      transform: rotate(0deg);
+      transition: all 0.3s;
+      transition-timing-function: cubic-bezier(0.30, 0.32, 0.86, -0.35);
+    }
+    .second-hand {
+      width:37px;
+      height:275px;
+      background: url(second.png);
+      background-size:cover;
+      position: absolute;
+      right:50%;
+      transform-origin: 20px 250px;
+      transform: rotate(0deg);
+      transition: all 0.3s;
+      transition-timing-function: cubic-bezier(0.30, 0.32, 0.86, -0.35);
+    }
+
+  </style>
+
+  <script>
+  //audio
+  var soundClick = document.getElementById('sound');
+  var secondHand = document.querySelector('.second-hand');
+  var hourHand = document.querySelector('.hour-hand');
+  var minHand = document.querySelector('.min-hand');
+  function setDate() {
+
+    var now =  new Date();
+    var seconds = now.getSeconds();
+    var minutes = now.getMinutes();
+    var hours = now.getHours();
+    var SecondDegrees = ((seconds/60) * 360);
+    var HourDegrees = ((hours/12) * 360) + ((minutes/60)*30);
+    var MinutesDegrees = ((minutes/60) * 360)  + ((seconds/60) * 6);
+    //CSS
+    secondHand.style.transform = `rotate(${SecondDegrees}deg)`;
+    minHand.style.transform = `rotate(${MinutesDegrees}deg)`;
+    hourHand.style.transform = `rotate(${HourDegrees}deg)`;
+    //sound
+    soundClick.currentTime = 0;
+    soundClick.play();
+    if(SecondDegrees === 0) {
+      secondHand.style.transition = 'none';
+    }else {
+      secondHand.style.transition = 'all 0.3s';
+    }
+    console.log(SecondDegrees);
+  }
+
+  setInterval(setDate, 1000);
+
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>
